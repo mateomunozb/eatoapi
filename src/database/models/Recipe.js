@@ -30,6 +30,7 @@ const recipeSchema = Schema({
         },
       },
     ],
+    require: true,
   },
   method: {
     type: String,
