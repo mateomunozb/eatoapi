@@ -1,0 +1,25 @@
+{
+  "name": "eatoapi",
+  "version": "1.0.0",
+  "description": "Esta API sirven para gestionar recetas de un restaurante ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateomunozb/eatoapi.git"
+  },
+  "keywords": [
+    "recetas",
+    "api",
+    "productos",
+    "eato"
+  ],
+  "author": "Mateo Muñoz Bustamante",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mateomunozb/eatoapi/issues"
+  },
+  "homepage": "https://github.com/mateomunozb/eatoapi#readme"
+}
