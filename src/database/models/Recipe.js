@@ -28,10 +28,6 @@ const recipeSchema = Schema({
     type: String,
     require: true,
   },
-  cost: {
-    type: Number,
-    require: true,
-  },
 })
 
 module.exports = recipeSchema
