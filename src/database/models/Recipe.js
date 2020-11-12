@@ -12,15 +12,7 @@ const recipeSchema = Schema({
   ingredients: {
     type: [
       {
-        text: {
-          type: String,
-          require: true,
-        },
-        amout: {
-          type: Number,
-          require: true,
-        },
-        unit: {
+        ingredient: {
           type: String,
           require: true,
         },
