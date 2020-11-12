@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const PORT = process.env.PORT || 3001
 const recipesRoutes = require('./src/routes/recipes')
+const productsRoutes = require('./src/routes/products')
 
 //Cors
 const cors = require('cors')
@@ -17,6 +18,7 @@ app.use(bodyParser.json())
 
 //Routes
 app.use('/api/recipes', recipesRoutes)
+app.use('/api/products', productsRoutes)
 app.get('/api', (req, res) => {
   res.json({
     estado: true,

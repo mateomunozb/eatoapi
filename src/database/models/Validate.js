@@ -11,4 +11,10 @@ const schemaRecipe = Joi.object({
   method: Joi.string().required(),
 })
 
-module.exports = { schemaRecipe }
+const schemaProduct = Joi.object({
+  name: Joi.string().required(),
+  unit: Joi.string().required(),
+  cost: Joi.number().required(),
+})
+
+module.exports = { schemaRecipe, schemaProduct }

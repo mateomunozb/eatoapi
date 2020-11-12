@@ -12,28 +12,26 @@ module.exports = {
   },
 
   addRecipes: async (req, res) => {
+    const { error } = schemaRecipe.validate(req.body)
+
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message })
+    }
+
+    const { name, ingredients, method } = req.body
+
+    if (ingredients.length === 0) {
+      return res.status(400).json({ error: 'Ingredients list is empty' })
+    }
+
     try {
-      const allRecipes = await Recipe.find({})
-
-      const { error } = schemaRecipe.validate(req.body)
-
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message })
-      }
-
-      const { name, ingredients, method } = req.body
-
-      if (ingredients.length === 0) {
-        return res.status(400).json({ error: 'Ingredients list is empty' })
-      }
-
       const recipeExist = await Recipe.findOne({ name })
       if (recipeExist) return res.status(400).json({ error: 'Recipe alredy exist' })
 
+      const allRecipes = await Recipe.find({})
       const id = allRecipes.length + 1
 
       const recipe = new Recipe({ id, name, ingredients, method })
-
       const recipeDB = await recipe.save()
       res.json({ message: 'Recipe created', data: recipeDB })
     } catch (error) {
