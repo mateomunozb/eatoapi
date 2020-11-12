@@ -1,7 +1,9 @@
 const router = require('express').Router()
 
-const { addRecipes } = require('../controllers/recipes')
+const { addRecipes, updateRecipes, getRecipes, deleteRecipes } = require('../controllers/recipes')
 
-router.route('/').post(addRecipes)
+router.route('/').get(getRecipes).post(addRecipes)
+
+router.route('/:id').put(updateRecipes).delete(deleteRecipes)
 
 module.exports = router
