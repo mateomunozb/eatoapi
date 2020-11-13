@@ -1,6 +1,7 @@
 const { Ingredient } = require('../database/db')
 const { Product } = require('../database/db')
 const { Recipe } = require('../database/db')
+const mongoose = require('mongoose')
 
 module.exports = {
   getIngredients: async (req, res) => {
@@ -51,14 +52,14 @@ module.exports = {
 
       const prueba = recipe.ingredients.map((ingredient) => {
         console.log('TLC: ingredient._id', typeof ingredient._id)
-        console.log('TLC: ingredientId', typeof Object(ingredientId))
-        return ingredient._id !== Object(ingredientId)
+        console.log('TLC: ingredientId', typeof ingredientId)
+        return ingredient._id !== mongoose.Types.ObjectId(ingredientId)
       })
       console.log('TLC: prueba', prueba)
 
-      const deleteIngredient = await Recipe.updateOne(
+      const deleteIngredient = await Recipe.findByIdAndUpdate(
         { _id: id },
-        { $pull: { ingredients: { _id: Object(ingredientId) } } }
+        { $pull: { ingredients: { _id: mongoose.Types.ObjectId(ingredientId) } } }
       )
       res.json({ message: 'Delete ingredient' })
     } catch (error) {
