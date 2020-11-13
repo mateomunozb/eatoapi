@@ -9,24 +9,14 @@ const recipeSchema = Schema({
     type: String,
     require: true,
   },
-  ingredients: {
-    type: [
-      {
-        ingredient: {
-          type: String,
-          require: true,
-        },
-        cost: {
-          type: Number,
-          require: true,
-        },
-      },
-    ],
-    require: true,
-  },
+  ingredients: [{}],
   method: {
     type: String,
-    require: true,
+    require: false,
+  },
+  cost: {
+    type: Number,
+    require: false,
   },
 })
 

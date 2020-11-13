@@ -4,7 +4,7 @@ const { schemaRecipe } = require('../database/models/Validate')
 module.exports = {
   getRecipes: async (req, res) => {
     try {
-      const allRecipes = await Recipe.find({})
+      const allRecipes = await Recipe.find({}, { _id: 0 })
       res.json({ allRecipes })
     } catch (error) {
       res.status(400).json(error)
@@ -18,11 +18,7 @@ module.exports = {
       return res.status(400).json({ error: error.details[0].message })
     }
 
-    const { name, ingredients, method } = req.body
-
-    if (ingredients.length === 0) {
-      return res.status(400).json({ error: 'Ingredients list is empty' })
-    }
+    const { name, method } = req.body
 
     try {
       const recipeExist = await Recipe.findOne({ name })
@@ -31,7 +27,7 @@ module.exports = {
       const allRecipes = await Recipe.find({})
       const id = allRecipes.length + 1
 
-      const recipe = new Recipe({ id, name, ingredients, method })
+      const recipe = new Recipe({ id, name, method: method ? method : '', cost: 0 })
       const recipeDB = await recipe.save()
       res.json({ message: 'Recipe created', data: recipeDB })
     } catch (error) {
@@ -41,20 +37,29 @@ module.exports = {
 
   updateRecipes: async (req, res) => {
     const { id } = req.params
-    const { name, ingredients, method } = req.body
+    const { name, method } = req.body
+    console.log('TLC: name', name)
 
     try {
-      if (name) {
-        const updateRecipeName = await Recipe.updateOne({ id }, { name })
-        res.json({ message: 'Modified recipe' })
-      }
+      const idExist = await Recipe.findOne({ id })
+      if (!idExist) return res.status(400).json({ error: 'Recipe does not exist' })
 
-      if (method) {
-        const updateRecipeMethod = await Recipe.updateOne({ id }, { method })
-        res.json({ message: 'Modified recipe' })
+      console.log('TLC: idExist', idExist)
+      if (name || method) {
+        if (name) {
+          const updateRecipeName = await Recipe.updateOne({ id }, { name })
+          res.json({ message: 'Modified recipe' })
+        }
+        if (method) {
+          const updateRecipeMethod = await Recipe.updateOne({ id }, { method })
+          res.json({ message: 'Modified recipe' })
+        }
+      } else {
+        return res.status(400).json({ error: 'Invalid data' })
       }
     } catch (error) {
-      if (ingredients) res.status(400).json(error)
+      res.status(400).json(error)
+      console.log('TLC: error', error)
     }
   },
 
