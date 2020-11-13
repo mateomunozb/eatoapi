@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const recipeSchema = require('./models/Recipe')
 const productSchema = require('./models/Product')
+const ingredientSchema = require('./models/Ingredient')
 
 const { model, connect } = require('mongoose')
 
@@ -16,5 +17,6 @@ connect(process.env.URI, {
 
 const Recipe = model('Recipe', recipeSchema)
 const Product = model('Product', productSchema)
+const Ingredient = model('Ingredient', ingredientSchema)
 
-module.exports = { Recipe, Product }
+module.exports = { Recipe, Product, Ingredient }

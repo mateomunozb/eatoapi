@@ -4,7 +4,7 @@ const { schemaProduct } = require('../database/models/Validate')
 module.exports = {
   getProducts: async (req, res) => {
     try {
-      const allProducts = await Product.find({})
+      const allProducts = await Product.find({}, { _id: 0 })
       res.json({ allProducts })
     } catch (error) {
       res.status(400).json(error)
