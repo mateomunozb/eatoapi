@@ -35,13 +35,11 @@ module.exports = {
   updateRecipes: async (req, res) => {
     const { id } = req.params
     const { name, method } = req.body
-    console.log('TLC: name', name)
 
     try {
       const idExist = await Recipe.findOne({ _id: id })
       if (!idExist) return res.status(400).json({ error: 'Recipe does not exist' })
 
-      console.log('TLC: idExist', idExist)
       if (name || method) {
         if (name) {
           const updateRecipeName = await Recipe.updateOne({ _id: id }, { name })

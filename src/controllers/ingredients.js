@@ -15,6 +15,7 @@ module.exports = {
       res.status(400).json(error)
     }
   },
+
   addIngredient: async (req, res) => {
     const { id } = req.params
     const { productName, amount } = req.body
@@ -44,6 +45,38 @@ module.exports = {
       res.status(400).json(error)
     }
   },
+
+  updateIngredient: async (req, res) => {
+    const { id, ingredientId } = req.params
+    const { amount } = req.body
+    if (!amount) return res.status(400).json({ error: 'Invalid data' })
+
+    try {
+      const recipe = await Recipe.findOne({ _id: id })
+      if (!recipe) return res.status(400).json({ error: 'Recipe does not exist' })
+
+      const cost = recipe.ingredients.map((ingredient) => {
+        const id = String(ingredient._id)
+        if (id === ingredientId) {
+          return (
+            recipe.cost -
+            ingredient.product.cost * ingredient.amount +
+            ingredient.product.cost * amount
+          )
+        }
+      })
+
+      const updateIngredient = await Recipe.updateOne(
+        { _id: id, 'ingredients._id': mongoose.Types.ObjectId(ingredientId) },
+        { $set: { 'ingredients.$.amount': amount }, cost: cost[0] }
+      )
+      console.log('TLC: updateIngredient', updateIngredient)
+      res.json({ message: 'Modified ingredient' })
+    } catch (error) {
+      res.status(400).json(error)
+    }
+  },
+
   deleteIngredient: async (req, res) => {
     const { id, ingredientId } = req.params
     try {
@@ -56,7 +89,6 @@ module.exports = {
           return recipe.cost - ingredient.product.cost * ingredient.amount
         }
       })
-      console.log('TLC: cost', cost[0])
 
       const deleteIngredient = await Recipe.findByIdAndUpdate(
         { _id: id },
