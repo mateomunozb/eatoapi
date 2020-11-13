@@ -50,17 +50,19 @@ module.exports = {
       const recipe = await Recipe.findOne({ _id: id })
       if (!recipe) return res.status(400).json({ error: 'Recipe does not exist' })
 
-      const prueba = recipe.ingredients.map((ingredient) => {
-        console.log('TLC: ingredient._id', typeof ingredient._id)
-        console.log('TLC: ingredientId', typeof ingredientId)
-        return ingredient._id !== mongoose.Types.ObjectId(ingredientId)
+      const cost = recipe.ingredients.map((ingredient) => {
+        const id = String(ingredient._id)
+        if (id === ingredientId) {
+          return recipe.cost - ingredient.product.cost * ingredient.amount
+        }
       })
-      console.log('TLC: prueba', prueba)
+      console.log('TLC: cost', cost[0])
 
       const deleteIngredient = await Recipe.findByIdAndUpdate(
         { _id: id },
-        { $pull: { ingredients: { _id: mongoose.Types.ObjectId(ingredientId) } } }
+        { $pull: { ingredients: { _id: mongoose.Types.ObjectId(ingredientId) } }, cost: cost[0] }
       )
+
       res.json({ message: 'Delete ingredient' })
     } catch (error) {
       res.status(400).json(error)
