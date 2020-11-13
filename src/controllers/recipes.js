@@ -4,7 +4,7 @@ const { schemaRecipe } = require('../database/models/Validate')
 module.exports = {
   getRecipes: async (req, res) => {
     try {
-      const allRecipes = await Recipe.find({}, { _id: 0 })
+      const allRecipes = await Recipe.find({})
       res.json({ allRecipes })
     } catch (error) {
       res.status(400).json(error)
@@ -24,10 +24,7 @@ module.exports = {
       const recipeExist = await Recipe.findOne({ name })
       if (recipeExist) return res.status(400).json({ error: 'Recipe alredy exist' })
 
-      const allRecipes = await Recipe.find({})
-      const id = allRecipes.length + 1
-
-      const recipe = new Recipe({ id, name, method: method ? method : '', cost: 0 })
+      const recipe = new Recipe({ name, method: method ? method : '', cost: 0 })
       const recipeDB = await recipe.save()
       res.json({ message: 'Recipe created', data: recipeDB })
     } catch (error) {
@@ -41,17 +38,17 @@ module.exports = {
     console.log('TLC: name', name)
 
     try {
-      const idExist = await Recipe.findOne({ id })
+      const idExist = await Recipe.findOne({ _id: id })
       if (!idExist) return res.status(400).json({ error: 'Recipe does not exist' })
 
       console.log('TLC: idExist', idExist)
       if (name || method) {
         if (name) {
-          const updateRecipeName = await Recipe.updateOne({ id }, { name })
+          const updateRecipeName = await Recipe.updateOne({ _id: id }, { name })
           res.json({ message: 'Modified recipe' })
         }
         if (method) {
-          const updateRecipeMethod = await Recipe.updateOne({ id }, { method })
+          const updateRecipeMethod = await Recipe.updateOne({ _id: id }, { method })
           res.json({ message: 'Modified recipe' })
         }
       } else {
@@ -66,7 +63,7 @@ module.exports = {
   deleteRecipes: async (req, res) => {
     const { id } = req.params
     try {
-      const deleteRecipe = await Recipe.deleteOne({ id })
+      const deleteRecipe = await Recipe.deleteOne({ _id: id })
       res.json({ message: 'Recipe removed' })
     } catch (error) {
       res.status(400).json(error)
