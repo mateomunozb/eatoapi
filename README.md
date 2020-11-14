@@ -1,13 +1,17 @@
-#RECIPES - API
+# RECIPES - API
 
--[Documentacion](https://documenter.getpostman.com/view/10546376/TVep7nJ3)
+- [Documentación](https://documenter.getpostman.com/view/10546376/TVep7nJ3)
 
-###Instalar dependencias
+## Instalar dependencias
 
+```
 yarn
+```
 
-###Servidor local
+## Servidor local
 
+```
 yarn start
+```
 
-La api corre por defecto [http://localhost:3001/], se debe configurar en variable de entorno la uri de la base de datos de mongoDB
+La api corre por defecto [http://localhost:3001/], se debe configurar en variable de entorno la uri de la base de datos de mongoDB.
