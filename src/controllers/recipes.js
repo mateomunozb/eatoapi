@@ -54,13 +54,14 @@ module.exports = {
       }
     } catch (error) {
       res.status(400).json(error)
-      console.log('TLC: error', error)
     }
   },
 
   deleteRecipes: async (req, res) => {
     const { id } = req.params
     try {
+      const recipe = await Recipe.findOne({ _id: id })
+      if (!recipe) return res.status(400).json({ error: 'Recipe does not exist' })
       const deleteRecipe = await Recipe.deleteOne({ _id: id })
       res.json({ message: 'Recipe removed' })
     } catch (error) {

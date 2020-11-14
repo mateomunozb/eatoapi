@@ -70,7 +70,6 @@ module.exports = {
         { _id: id, 'ingredients._id': mongoose.Types.ObjectId(ingredientId) },
         { $set: { 'ingredients.$.amount': amount }, cost: cost[0] }
       )
-      console.log('TLC: updateIngredient', updateIngredient)
       res.json({ message: 'Modified ingredient' })
     } catch (error) {
       res.status(400).json(error)
